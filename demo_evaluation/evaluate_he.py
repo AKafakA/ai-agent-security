@@ -126,8 +126,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model",
-        choices=["gpt-3.5-turbo", "gpt-4-turbo"],
-        default="gpt-3.5-turbo",
+        choices=["gpt-oss:20b"],
+        default="gpt-oss:20b",
         help="LLM for agent reasoning",
     )
     parser.add_argument(
