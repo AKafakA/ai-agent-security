@@ -7,7 +7,7 @@ from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputP
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.base import Runnable
 from langchain_core.tools import StructuredTool
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain.pydantic_v1 import BaseModel, Field
 import pyffx
 import sys
@@ -188,7 +188,11 @@ class OpenAISSNAgent(SSNAgent):
                 (Runnable): Langchain runnable representing agent
         """
         # Need to set OPENAI_API_KEY environment variable: export OPENAI_API_KEY="<key>"
-        llm = ChatOpenAI(model=model_name, temperature=0)
+        llm = ChatOllama(
+            model=model_name,
+            temperature=0.0,
+            reasoning=True,
+        )
         llm_with_tools = llm.bind_tools(
             [self.return_number, self.dummy_tool, self.add_numbers]
         )
@@ -255,8 +259,8 @@ class OpenAISSNAgent(SSNAgent):
 
 def main(args):
     agents = {
-        "gpt-3.5-turbo": OpenAISSNAgent,
-        "gpt-4-turbo": OpenAISSNAgent,
+        "gpt-oss:20b": OpenAISSNAgent,
+        "gpt-oss:120b": OpenAISSNAgent,
         "llama2": LlamaSSNAgent,
     }
 
@@ -279,8 +283,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model",
-        choices=["gpt-3.5-turbo", "gpt-4-turbo", "llama2"],
-        default="gpt-3.5-turbo",
+        choices=["gpt-oss:20b", "gpt-oss:120b", "llama2"],
+        default="gpt-oss:20b",
         help="LLM for agent reasoning",
     )
     parser.add_argument(

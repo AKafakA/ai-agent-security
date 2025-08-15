@@ -7,7 +7,7 @@ from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputP
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.base import Runnable
 from langchain_core.tools import StructuredTool
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain.pydantic_v1 import BaseModel, Field
 import os
 import re
@@ -130,7 +130,7 @@ def create_agent(model_name: str = "gpt-3.5-turbo") -> Runnable:
             (Runnable): Langchain runnable representing agent
     """
     # Need to set OPENAI_API_KEY environment variable: export OPENAI_API_KEY="<key>"
-    llm = ChatOpenAI(model=model_name, temperature=0)
+    llm = ChatOllama(model=model_name, temperature=0, reasoning=True)
     llm_with_tools = llm.bind_tools([add_numbers, multiply_numbers])
 
     template_query = """Based on the numbers below, return a response to the user's question without preamble:
@@ -225,8 +225,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model",
-        choices=["gpt-3.5-turbo", "gpt-4-turbo"],
-        default="gpt-3.5-turbo",
+        choices=["gpt-oss:20b"],
+        default="gpt-oss:20b",
         help="LLM for agent reasoning",
     )
 
