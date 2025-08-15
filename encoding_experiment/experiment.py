@@ -1,5 +1,5 @@
 import argparse
-from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from random import randrange, seed
@@ -12,7 +12,7 @@ from encoding_experiment.encoder import Encoder
 
 def create_chain(model: str):
     """Creates chain to interface with LLM for experiment."""
-    llm = ChatOpenAI(model=model, temperature=0)
+    llm = ChatOllama(model=model, temperature=0)
     query_template = """
     You are an assistant that responds to user questions. You know that slicing
     a string involves getting the characters in the specified locations. Here
