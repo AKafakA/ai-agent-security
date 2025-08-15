@@ -12,7 +12,7 @@ from encoding_experiment.encoder import Encoder
 
 def create_chain(model: str):
     """Creates chain to interface with LLM for experiment."""
-    llm = ChatOllama(model=model, temperature=0)
+    llm = ChatOllama(model=model, temperature=0, reasoning=True)
     query_template = """
     You are an assistant that responds to user questions. You know that slicing
     a string involves getting the characters in the specified locations. Here
@@ -108,8 +108,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--model",
-        choices=["gpt-3.5-turbo", "gpt-4-turbo"],
-        default="gpt-3.5-turbo",
+        choices=["gpt-oss:20b"],
+        default="gpt-oss:20b",
         help="LLM for agent reasoning",
     )
     parser.add_argument(
