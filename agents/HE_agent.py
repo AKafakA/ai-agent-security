@@ -195,12 +195,26 @@ def main(args):
         tools=[add_numbers, multiply_numbers],
         verbose=True,
     )
-    result = agent_executor.invoke(
+    # result = agent_executor.invoke(
+    #     {
+    #         "question": user_query,
+    #         "numbers": [serialize_ciphertext(x) for x in ctxts.values()],
+    #     }
+    # )
+    result_iterator = agent_executor.stream(
         {
             "question": user_query,
             "numbers": [serialize_ciphertext(x) for x in ctxts.values()],
         }
     )
+    final_result = None
+    for result in result_iterator:
+        if isinstance(result, dict) and "output" in result:
+            print(result["output"], end="")
+            final_result = result
+        else:
+            print(result, end="")
+    result = final_result
     print(f"Agent output: " + result["output"])
     print("Postprocessed output: " + post_process(result["output"]))
 
